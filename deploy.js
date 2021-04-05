@@ -36,7 +36,7 @@ let config;
 if (fs.existsSync(configFilename)) {
   config = require('./wordpress-deploy.config.js');
 } else {
-  error('Config file not found', 'Filename: ' + configFilename);
+  error('Config file not found', 'Filename: ' + configFilename + '\nExample: ' + 'https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js');
   return;
 }
 
