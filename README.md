@@ -1,5 +1,9 @@
 # wordpress-deploy
 
+Easily deploy your wordpress theme via FTP.
+
+---
+
 ## Author
 
 Stephan Wagner\
@@ -26,7 +30,9 @@ wordpress-deploy
 
 ## Config
 
-Add a config file named `wordpress-deploy.config.js` to your wordpress folder and adjust accordingly:
+Add a config file named `wordpress-deploy.config.js` to your wordpress folder and adjust accordingly.
+
+> **Make sure to add the config file to your `.gitignore`.**
 
 ```javascript
 const config = {
@@ -61,9 +67,7 @@ const config = {
 module.exports = config;
 ```
 
-You can also find an example here: https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js
-
-> **Make sure to add the config file to your `.gitignore`.**
+Example file: https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js
 
 You can also provide an argument to use a different filename:
 
