@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/StephanWagner/wordpress-deploy#readme",
   "dependencies": {
-    "ftp": "^0.3.10"
+    "boxen": "^5.0.0",
+    "colors": "^1.4.0",
+    "ftp": "^0.3.10",
+    "yargs": "^16.2.0"
   }
 }
