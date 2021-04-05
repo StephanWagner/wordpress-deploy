@@ -1,0 +1,29 @@
+{
+  "name": "wordpress-deploy",
+  "version": "0.0.1",
+  "description": "Easily deploy your wordpress theme via FTP.",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "node ./deploy.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StephanWagner/wordpress-deploy.git"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "deploy",
+    "upload",
+    "FTP"
+  ],
+  "author": "Stephan Wagner <stephanwagner.me@gmail.com> (https://stephanwagner.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StephanWagner/wordpress-deploy/issues"
+  },
+  "homepage": "https://github.com/StephanWagner/wordpress-deploy#readme",
+  "dependencies": {
+    "ftp": "^0.3.10"
+  }
+}
