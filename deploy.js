@@ -9,6 +9,9 @@ const Client = require('ftp');
 const path = require('path');
 const fs = require('fs');
 
+// Change dir to current working directory
+process.chdir(process.cwd());
+
 // Log an error message
 function error(message, description) {
   console.log(
@@ -36,7 +39,13 @@ let config;
 if (fs.existsSync(configFilename)) {
   config = require('./wordpress-deploy.config.js');
 } else {
-  error('Config file not found', 'Filename: ' + configFilename + '\nExample: ' + 'https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js');
+  error(
+    'Config file not found',
+    'Filename: ' +
+      configFilename +
+      '\nExample: ' +
+      'https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js'
+  );
   return;
 }
 
