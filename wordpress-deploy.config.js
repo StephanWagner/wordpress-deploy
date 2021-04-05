@@ -14,7 +14,7 @@ const config = {
   // Password for authentication
   password: 'secret',
 
-  // Theme to deploy
+  // The theme name
   theme: 'my-wordpress-theme',
 
   // The local theme folder location
