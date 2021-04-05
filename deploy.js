@@ -10,7 +10,11 @@ const path = require('path');
 const fs = require('fs');
 
 // Change dir to current working directory
-process.chdir(process.cwd());
+// process.chdir(process.cwd());
+
+console.log(process.cwd());
+console.log(path.resolve('.'));
+console.log(__dirname);
 
 // Log an error message
 function error(message, description) {
