@@ -1,16 +1,12 @@
 {
   "name": "wordpress-deploy",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Easily deploy your wordpress theme via FTP.",
   "main": "index.js",
   "scripts": {
-    "wordpress-deploy": "node ./deploy.js",
-    "wp-deploy": "node ./deploy.js"
+    "wordpress-deploy": "node ./deploy.js"
   },
-  "bin": {
-    "wordpress-deploy": "./deploy.js",
-    "wp-deploy": "./deploy.js"
-  },
+  "bin": "./deploy.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/StephanWagner/wordpress-deploy.git"
