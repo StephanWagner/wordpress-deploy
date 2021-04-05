@@ -131,6 +131,18 @@ walk(
 
     // Init client
     const client = new Client();
+    client.on('error', function (err) {
+      error(
+        'Could not connect to server',
+        'Host: ' +
+          config.host +
+          '\nPort: ' +
+          config.port +
+          '\nUser: ' +
+          config.user
+      );
+    });
+
     client.on('ready', function () {
       // Create backup date
       const date = new Date();
