@@ -2,24 +2,32 @@
 // https://www.npmjs.com/package/ftp
 
 const config = {
+  // The hostname or IP address of the FTP server
+  host: 'localhost',
 
-    // The hostname or IP address of the FTP server
-    host: 'localhost',
+  // The port of the FTP server
+  port: 21,
 
-    // The port of the FTP server
-    port: 21,
+  // Username for authentication
+  user: 'anonymous',
 
-    // Username for authentication
-    user: 'anonymous',
+  // Password for authentication
+  password: 'secret',
 
-    // Password for authentication
-    password: 'secret',
+  // Theme to deploy
+  theme: 'my-wordpress-theme',
 
-    // Theme to deploy
-    theme: 'my-wordpress-theme',
+  // The local theme folder location
+  themeLocal: './wp-content/themes',
 
-    // The folder to move the current theme to
-    backup: './wordpress-deploy_backups',
-}
+  // The remote theme folder location
+  themeRemote: './wp-content/themes',
+
+  // Files or folders to ignore
+  ignore: ['.DS_Store', 'node_modules'],
+
+  // The remote folder in which to backup the current theme
+  backupFolder: './wordpress-deploy_backups'
+};
 
 module.exports = config;
