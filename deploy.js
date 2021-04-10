@@ -239,6 +239,7 @@ walk(
 
               // Move uploaded theme from backup folder to theme folder
               client.rename(uploadPath, themePathRemote, function (err) {
+                client.end();
                 if (err) {
                   error(
                     'Could not create theme folder',
@@ -254,7 +255,6 @@ walk(
                     borderColor: 'green'
                   })
                 );
-                client.end();
               });
             });
           } else {
