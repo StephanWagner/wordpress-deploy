@@ -190,86 +190,107 @@ walk(
       const hour = ('0' + date.getHours()).slice(-2);
       const minutes = ('0' + date.getMinutes()).slice(-2);
       const seconds = ('0' + date.getSeconds()).slice(-2);
-      const dateStr = year + '-' + month + '-' + day;
-      const timeStr = hour + '-' + minutes + '-' + seconds;
-      const backupDate = dateStr + '_' + timeStr + '_';
+      const dateStr = year + month + day + '_' + hour + minutes + seconds;
 
-      // Backup current theme
+      // Path to theme backup folder
       const backupPath = path.normalize(
-        config.backup + '/' + backupDate + config.theme
+        config.backup + '/' + dateStr + '_' + config.theme
       );
 
+      // Path to theme upload folder
+      const uploadPath = path.normalize(backupPath + '_upload');
+
+      // MAke backup folder if it doesn't exist
       client.mkdir(path.normalize(config.backup), true, function (err) {
         if (err) {
           throw err;
         }
 
-        client.rename(themePathRemote, backupPath, function (err) {
-          // Get the remote path
-          function getRemoteFilename(filename) {
-            return filename.replace(themePathLocal, themePathRemote);
+        // Get the remote path
+        function getRemoteFilename(filename) {
+          return filename.replace(themePathLocal, uploadPath);
+        }
+
+        // Callback after upload
+        function uploadCallback(err, progress, client, filelist) {
+          if (err) {
+            throw err;
           }
+          progress.increment();
 
-          // Callback after upload
-          function uploadCallback(err, progress, client, filelist) {
-            if (err) {
-              throw err;
-            }
-            progress.increment();
+          // All files are uploaded
+          if (filelist.length === 1) {
+            progress.update({
+              status: 'Upload complete'
+            });
+            progress.stop();
 
-            // End process
-            if (filelist.length === 1) {
-              progress.update({
-                status: 'Upload complete'
+            // Rename current theme folder
+            client.rename(themePathRemote, backupPath, function (err) {
+              if (err) {
+                error(
+                  'Could not backup current theme',
+                  'Remote folder: ' + themePathRemote
+                );
+              }
+
+              // Move new theme from upload folder to theme folder
+              client.rename(uploadPath, themePathRemote, function (err) {
+                if (err) {
+                  error(
+                    'Could not create theme folder',
+                    'Remote folder: ' + themePathRemote
+                  );
+                  return;
+                }
+                console.log(
+                  boxen(colors.brightGreen('✓ Upload complete'), {
+                    padding: 1,
+                    margin: 1,
+                    borderStyle: 'double',
+                    borderColor: 'green'
+                  })
+                );
+                client.end();
               });
-              progress.stop();
-              console.log(
-                boxen(colors.brightGreen('✓ Upload complete'), {
-                  padding: 1,
-                  margin: 1,
-                  borderStyle: 'double',
-                  borderColor: 'green'
-                })
-              );
-              client.end();
-            } else {
-              // Upload next file
-              putItems(filelist.slice(1));
-            }
+            });
+          } else {
+            // Upload next file
+            putItems(filelist.slice(1));
           }
+        }
 
-          // Upload a file or create a directory
-          function putItems(filelist) {
-            const file = filelist[0];
-            const fileRemote = getRemoteFilename(file);
+        // Upload a file or create a directory
+        function putItems(filelist) {
+          const file = filelist[0];
+          const fileRemote = getRemoteFilename(file);
 
-            // Create a directory
-            if (fs.lstatSync(file).isDirectory()) {
-              progress.update({
-                status: 'Creating directory: ' + path.basename(file)
-              });
-              client.mkdir(fileRemote, true, function (err) {
-                uploadCallback(err, progress, client, filelist);
-              });
-            } else {
-              // Upload a file
-              progress.update({
-                status: 'Uploading file: ' + path.basename(file)
-              });
-              client.put(file, fileRemote, function (err) {
-                uploadCallback(err, progress, client, filelist);
-              });
-            }
+          // Create a directory
+          if (fs.lstatSync(file).isDirectory()) {
+            progress.update({
+              status: 'Creating directory: ' + path.basename(file)
+            });
+            client.mkdir(fileRemote, true, function (err) {
+              uploadCallback(err, progress, client, filelist);
+            });
+          } else {
+            // Upload a file
+            progress.update({
+              status: 'Uploading file: ' + path.basename(file)
+            });
+            client.put(file, fileRemote, function (err) {
+              uploadCallback(err, progress, client, filelist);
+            });
           }
+        }
 
-          // Start progress bar
-          progress.start(results.length, 0, {
-            status: 'Preparing to upload files'
-          });
-
-          // Start upload
-          putItems(results);
+        // Start progress bar
+        progress.start(results.length, 0, {
+          status: 'Preparing to upload files'
         });
+
+        // Start upload
+        putItems(results);
       });
     });
 
