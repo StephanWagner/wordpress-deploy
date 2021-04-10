@@ -80,7 +80,7 @@ console.log(
   })
 );
 
-// Check a file or folder can be uploaded
+// Check if a file or folder can be uploaded
 function canInclude(file) {
   file = path.relative(themePathLocal, file);
   let canInclude = true;
@@ -182,7 +182,7 @@ walk(
     });
 
     client.on('ready', function () {
-      // Create backup date
+      // Create backup date string
       const date = new Date();
       const year = date.getFullYear();
       const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -200,13 +200,13 @@ walk(
       // Path to theme upload folder
       const uploadPath = path.normalize(backupPath + '_upload');
 
-      // MAke backup folder if it doesn't exist
+      // Make backup folder if it doesn't exist
       client.mkdir(path.normalize(config.backup), true, function (err) {
         if (err) {
           throw err;
         }
 
-        // Get the remote path
+        // Get the remote path to filename
         function getRemoteFilename(filename) {
           return filename.replace(themePathLocal, uploadPath);
         }
@@ -216,10 +216,13 @@ walk(
           if (err) {
             throw err;
           }
+
+          // Update progress bar
           progress.increment();
 
           // All files are uploaded
           if (filelist.length === 1) {
+            // Complete progress bar
             progress.update({
               status: 'Upload complete'
             });
@@ -230,16 +233,16 @@ walk(
               if (err) {
                 error(
                   'Could not backup current theme',
-                  'Remote folder: ' + themePathRemote
+                  'Remote location: ' + themePathRemote
                 );
               }
 
-              // Move new theme from upload folder to theme folder
+              // Move uploaded theme from backup folder to theme folder
               client.rename(uploadPath, themePathRemote, function (err) {
                 if (err) {
                   error(
                     'Could not create theme folder',
-                    'Remote folder: ' + themePathRemote
+                    'Remote location: ' + themePathRemote
                   );
                   return;
                 }
@@ -294,6 +297,7 @@ walk(
       });
     });
 
+    // Connect to client
     client.connect({
       host: config.host,
       port: config.port,
