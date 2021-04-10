@@ -30,7 +30,9 @@ function error(message, description) {
 const argv = yargs(hideBin(process.argv)).argv;
 
 // Get config
-const configFilename = path.resolve(argv.configFile || './wordpress-deploy.config.js');
+const configFilename = path.resolve(
+  argv.configFile || './wordpress-deploy.config.js'
+);
 let config;
 
 if (fs.existsSync(configFilename)) {
@@ -193,6 +195,14 @@ walk(
                 status: 'Upload complete'
               });
               progress.stop();
+              console.log(
+                boxen(colors.brightGreen('✓ Upload complete'), {
+                  padding: 1,
+                  margin: 1,
+                  borderStyle: 'double',
+                  borderColor: 'green'
+                })
+              );
               client.end();
             } else {
               // Upload next file
