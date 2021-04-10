@@ -32,10 +32,7 @@ wp-dep
 
 Add a config file named `wordpress-deploy.config.js` to your wordpress folder and adjust accordingly.
 
-> <br>
-> Make sure to add the config file to your <tt>.gitignore</tt>.<br>
-> <br>
-<br>
+**Make sure to add the config file to your `.gitignore`**
 
 ```javascript
 const config = {
