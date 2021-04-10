@@ -14,13 +14,13 @@ https://stephanwagner.me \
 
 ## Install
 
-Install the package globally
+Install the package globally:
 
 ```bash
 npm install -g wordpress-deploy
 ```
 
-Now you can use the deploy script `wp-dep` preferably from within your wordpress folder.
+Now you can use the bash command `wordpress-deploy` (or in short `wp-dep`) preferably from within your wordpress folder.
 
 ```bash
 wp-dep
@@ -32,7 +32,10 @@ wp-dep
 
 Add a config file named `wordpress-deploy.config.js` to your wordpress folder and adjust accordingly.
 
-> **Make sure to add the config file to your `.gitignore`.**
+> <br>
+> Make sure to add the config file to your <tt>.gitignore</tt>.<br>
+> <br>
+<br>
 
 ```javascript
 const config = {
@@ -62,22 +65,22 @@ const config = {
 
   // Files or folders to ignore
   // Folder paths are relative to the theme folder
-  // To ignore a folder use two patterns: 'foldername' and 'foldername/**'
+  // To ignore a folder use two patterns: 'folder', 'folder/**'
   ignore: ['.DS_Store', '.env', 'node_modules', 'node_modules/**']
 };
 
 module.exports = config;
 ```
 
-Example file: https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js
+Example file: [wordpress-deploy.config.js](https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js)
 
 You can also provide an argument to use a different config filename:
 
 ```bash
-wp-dep --configFile=./my-custom-config.js
+wp-dep --config=my-custom-config.js
 ```
 
-All config parameters can be passed to the `wp-dep` command:
+All config parameters can be used as arguments, for example:
 
 ```bash
 wp-dep --theme=my-theme
