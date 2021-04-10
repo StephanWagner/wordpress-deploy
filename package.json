@@ -1,6 +1,6 @@
 {
   "name": "wordpress-deploy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easily deploy your wordpress theme via FTP.",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/StephanWagner/wordpress-deploy#readme",
   "dependencies": {
-    "boxen": "^5.0.0",
+    "boxen": "^5.0.1",
     "cli-progress": "^3.9.0",
     "colors": "^1.4.0",
     "ftp": "^0.3.10",
