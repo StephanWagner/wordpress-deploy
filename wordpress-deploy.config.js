@@ -28,8 +28,8 @@ const config = {
 
   // Files or folders to ignore
   // Folder paths are relative to the theme folder
-  // To ignore a folder use two patterns: 'foldername' and 'foldername/**'
-  ignore: ['.DS_Store', '.env', 'node_modules', 'node_modules/**']
+  // To ignore a folder use two patterns: 'folder', 'folder/**'
+  ignore: ['.DS_Store', 'node_modules', 'node_modules/**']
 };
 
 module.exports = config;
