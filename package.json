@@ -1,6 +1,6 @@
 {
   "name": "wordpress-deploy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Easily deploy your wordpress theme via FTP.",
   "main": "index.js",
   "scripts": {
