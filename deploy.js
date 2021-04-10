@@ -32,7 +32,7 @@ const argv = yargs(hideBin(process.argv)).argv;
 
 // Get config
 const configFilename = path.resolve(
-  argv.configFile || './wordpress-deploy.config.js'
+  argv.config || './wordpress-deploy.config.js'
 );
 let config;
 
