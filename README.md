@@ -4,14 +4,6 @@ Easily deploy your wordpress theme via FTP.
 
 ---
 
-## Author
-
-Stephan Wagner\
-https://stephanwagner.me \
-<stephanwagner.me@gmail.com>
-
----
-
 ## Install
 
 Install the package globally:
