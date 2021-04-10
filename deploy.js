@@ -6,6 +6,7 @@ const boxen = require('boxen');
 const colors = require('colors/safe');
 const cliProgress = require('cli-progress');
 const Client = require('ftp');
+const minimatch = require('minimatch');
 const path = require('path');
 const fs = require('fs');
 
@@ -13,8 +14,8 @@ const fs = require('fs');
 function error(message, description) {
   console.log(
     boxen(
-      colors.red.bold('Error: ') +
-        colors.red(message) +
+      colors.brightRed.bold('Error: ') +
+        colors.brightRed(message) +
         (description ? '\n' + colors.white(description) : ''),
       {
         padding: 1,
@@ -54,10 +55,14 @@ config.port = config.port || 21;
 config.user = config.user || 'anonymous';
 config.password = config.password || 'secret';
 config.theme = config.theme || 'my-wordpress-theme';
-config.themeLocal = config.themeLocal || './wp-content/themes';
-config.themeRemote = config.themeRemote || './wp-content/themes';
+config.pathLocal = config.pathLocal || './wp-content/themes';
+config.pathRemote = config.pathRemote || './wp-content/themes';
+config.backup = config.backup || './.wordpress-deploy';
 config.ignore = config.ignore || [];
-config.backupFolder = config.backupFolder || './wordpress-deploy_backups';
+
+// Normalize pathnames
+const themePathLocal = path.normalize(config.pathLocal + '/' + config.theme);
+const themePathRemote = path.normalize(config.pathRemote + '/' + config.theme);
 
 // Show wordpress-deploy box
 let boxText = colors.brightMagenta('wordpress-deploy') + '\n\n';
@@ -75,10 +80,24 @@ console.log(
   })
 );
 
+// Check a file or folder can be uploaded
+function canInclude(file) {
+  file = path.relative(themePathLocal, file);
+  let canInclude = true;
+  for (let i = 0; i < config.ignore.length; i++) {
+    const ignorePattern = config.ignore[i];
+    if (minimatch(file, ignorePattern, { dot: true, matchBase: true })) {
+      canInclude = false;
+      break;
+    }
+  }
+  return canInclude;
+}
+
 // Get all files to upload
 // https://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
 var walk = function (dir, done) {
-  var results = [themePathLocal];
+  var results = [];
   fs.readdir(dir, function (err, list) {
     if (err) {
       return done(err);
@@ -91,7 +110,7 @@ var walk = function (dir, done) {
       }
       file = dir + '/' + file;
       // Add file if it is not ignored
-      if (config.ignore.indexOf(path.basename(file)) === -1) {
+      if (canInclude(file)) {
         results.push(file);
       }
       // Add directories recursively
@@ -120,9 +139,6 @@ const progress = new cliProgress.SingleBar({
   hideCursor: true
 });
 
-const themePathLocal = path.normalize(config.themeLocal + '/' + config.theme);
-const themePathRemote = path.normalize(config.themeRemote + '/' + config.theme);
-
 // Abort if theme not found
 if (!fs.existsSync(themePathLocal)) {
   error('Theme not found', 'Location: ' + themePathLocal);
@@ -138,6 +154,18 @@ walk(
     if (err) {
       throw err;
     }
+
+    // Error when nothing to upload
+    if (!results || !results.length) {
+      error(
+        'Nothing to upload',
+        'No files found in folder ' + config.themeLocal
+      );
+      return;
+    }
+
+    // Add theme folder
+    results.unshift(themePathLocal);
 
     // Init client
     const client = new Client();
@@ -168,10 +196,10 @@ walk(
 
       // Backup current theme
       const backupPath = path.normalize(
-        config.backupFolder + '/' + backupDate + config.theme
+        config.backup + '/' + backupDate + config.theme
       );
 
-      client.mkdir(path.normalize(config.backupFolder), true, function (err) {
+      client.mkdir(path.normalize(config.backup), true, function (err) {
         if (err) {
           throw err;
         }

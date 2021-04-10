@@ -18,16 +18,18 @@ const config = {
   theme: 'my-wordpress-theme',
 
   // The local theme folder location
-  themeLocal: './wp-content/themes',
+  pathLocal: './wp-content/themes',
 
   // The remote theme folder location
-  themeRemote: './wp-content/themes',
+  pathRemote: './wp-content/themes',
+
+  // The remote folder in which to save uploading files and backups
+  backup: './.wordpress-deploy',
 
   // Files or folders to ignore
-  ignore: ['.DS_Store', 'node_modules'],
-
-  // The remote folder in which to backup the current theme
-  backupFolder: './wordpress-deploy_backups'
+  // Folder paths are relative to the theme folder
+  // To ignore a folder use two patterns: 'foldername' and 'foldername/**'
+  ignore: ['.DS_Store', '.env', 'node_modules', 'node_modules/**']
 };
 
 module.exports = config;
