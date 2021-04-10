@@ -50,15 +50,15 @@ if (fs.existsSync(configFilename)) {
 }
 
 // Default values
-config.host = config.host || 'localhost';
-config.port = config.port || 21;
-config.user = config.user || 'anonymous';
-config.password = config.password || 'secret';
-config.theme = config.theme || 'my-wordpress-theme';
-config.pathLocal = config.pathLocal || './wp-content/themes';
-config.pathRemote = config.pathRemote || './wp-content/themes';
-config.backup = config.backup || './.wordpress-deploy';
-config.ignore = config.ignore || [];
+config.host = argv.host || config.host || 'localhost';
+config.port = argv.port || config.port || 21;
+config.user = argv.user || config.user || 'anonymous';
+config.password = argv.password || config.password || 'secret';
+config.theme = argv.theme || config.theme || 'my-wordpress-theme';
+config.pathLocal = argv.pathLocal || config.pathLocal || './wp-content/themes';
+config.pathRemote = argv.pathRemote || config.pathRemote || './wp-content/themes';
+config.backup = argv.backup || config.backup || './.wordpress-deploy';
+config.ignore = argv.ignore || config.ignore || [];
 
 // Normalize pathnames
 const themePathLocal = path.normalize(config.pathLocal + '/' + config.theme);
