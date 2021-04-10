@@ -20,10 +20,10 @@ Install the package globally
 npm install -g wordpress-deploy
 ```
 
-Now you can use the deploy script preferably from within your wordpress folder.
+Now you can use the deploy script `wp-dep` preferably from within your wordpress folder.
 
 ```bash
-wordpress-deploy
+wp-dep
 ```
 
 ---
@@ -52,16 +52,18 @@ const config = {
   theme: 'my-wordpress-theme',
 
   // The local theme folder location
-  themeLocal: './wp-content/themes',
+  pathLocal: './wp-content/themes',
 
   // The remote theme folder location
-  themeRemote: './wp-content/themes',
+  pathRemote: './wp-content/themes',
+
+  // The remote folder in which to save uploading files and backups
+  backup: './.wordpress-deploy',
 
   // Files or folders to ignore
-  ignore: ['.DS_Store', 'node_modules'],
-
-  // The remote folder in which to backup the current theme
-  backupFolder: './wordpress-deploy_backups'
+  // Folder paths are relative to the theme folder
+  // To ignore a folder use two patterns: 'foldername' and 'foldername/**'
+  ignore: ['.DS_Store', '.env', 'node_modules', 'node_modules/**']
 };
 
 module.exports = config;
@@ -69,8 +71,14 @@ module.exports = config;
 
 Example file: https://github.com/StephanWagner/wordpress-deploy/blob/main/wordpress-deploy.config.js
 
-You can also provide an argument to use a different filename:
+You can also provide an argument to use a different config filename:
 
 ```bash
-wordpress-deploy --configFile=./my-custom-config.js
+wp-dep --configFile=./my-custom-config.js
+```
+
+All config parameters can be passed to the `wp-dep` command:
+
+```bash
+wp-dep --theme=my-theme
 ```
